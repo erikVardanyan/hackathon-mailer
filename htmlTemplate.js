@@ -205,13 +205,13 @@ module.exports = {
           <tr>
             <td  style="line-height:0;font-size:0;mso-line-height-rule:exactly;">
               <v:image
-                 style="border:0;height:200px;mso-position-horizontal:center;position:absolute;top:0;width:600px;z-index:-3;" src="https://i.ibb.co/RcYxKMb/rectangle-5.jpg" xmlns:v="urn:schemas-microsoft-com:vml"
+                 style="border:0;height:200px;mso-position-horizontal:center;position:absolute;top:0;width:600px;z-index:-3;" src="https://i.ibb.co/MDNzQTZ/Chicago-Trump.png" xmlns:v="urn:schemas-microsoft-com:vml"
               />
       <![endif]-->
               <div style="margin:0 auto;max-width:720px;">
                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
                   <tr style="vertical-align:top;">
-                    <td background="https://i.ibb.co/RcYxKMb/rectangle-5.jpg" style="background:#2a3448 url(https://i.ibb.co/RcYxKMb/rectangle-5.jpg) no-repeat center center / cover;background-position:center center;background-repeat:no-repeat;padding:50px 0px;vertical-align:top;" height="100">
+                    <td background="https://i.ibb.co/MDNzQTZ/Chicago-Trump.png" style="background:#2a3448 url(https://i.ibb.co/MDNzQTZ/Chicago-Trump.png) no-repeat center center / cover;background-position:center center;background-repeat:no-repeat;padding:50px 0px;vertical-align:top;" height="100">
                       <!--[if mso | IE]>
         <table
            border="0" cellpadding="0" cellspacing="0" style="width:720px;" width="720"
@@ -226,7 +226,7 @@ module.exports = {
                               <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;margin:0px;">
                                 <tr>
                                   <td align="center" style="font-size:0px;padding:20px;word-break:break-word;">
-                                    <div style="font-family:Source Sans Pro, Arial, Helvetica Neue, Helvetica, sans-serif;font-size:36px;font-weight:900;line-height:45px;text-align:center;color:#fd6640;">Book a hotel for your upcoming meeting in ${location}</div>
+                                    <div style="font-family:Source Sans Pro, Arial, Helvetica Neue, Helvetica, sans-serif;font-size:36px;font-weight:900;line-height:45px;text-align:center;color:#ffffff;">Book a hotel for your upcoming meeting in ${location}</div>
                                   </td>
                                 </tr>
                               </table>
@@ -324,16 +324,6 @@ module.exports = {
                                             </td>
                                           </tr>
                                         </table>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td align="center" style="font-size:0px;padding:10px 25px;padding-top:3px;padding-bottom:0px;word-break:break-word;">
-                                        <div style="font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;line-height:1.43;text-align:center;color:#333f48;">If the button doesn’t work you can paste this link into your browser:</div>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td align="center" style="font-size:0px;padding:10px 25px;padding-top:0px;padding-bottom:20px;word-break:break-word;">
-                                        <div style="font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;line-height:1.43;text-align:center;color:#333f48;"><a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a></div>
                                       </td>
                                     </tr>
                                     <tr>
