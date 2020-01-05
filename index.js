@@ -153,10 +153,12 @@ function listEvents(auth) {
           return { start, end, summary, location, created: event.created };
         });
         if (initialEvents.length !== formattedEvents.length) {
+          const currentLength = initialEvents.length;
+
           initialEvents = formattedEvents;
           const lastEvent = formattedEvents[formattedEvents.length - 1];
 
-          sendEmailToUser(lastEvent);
+          currentLength && sendEmailToUser(lastEvent);
         }
       } else {
         console.log("No upcoming events found.");
@@ -198,8 +200,8 @@ app.post("/subscribe", (req, res) => {
   res.send("added!");
 });
 
-app.get("/", (req, res) => {
-  res.send("hello");
+app.get("/unsubscribe", (req, res) => {
+  res.send("unsubscribed!");
 });
 
 app.listen(process.env.PORT || port, () =>
