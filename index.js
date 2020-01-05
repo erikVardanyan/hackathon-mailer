@@ -8,6 +8,7 @@ const port = 8000;
 const fs = require("fs");
 const readline = require("readline");
 const { google } = require("googleapis");
+const { template } = require("./htmlTemplate");
 
 let initialEvents = [];
 let userEmail = "";
@@ -49,13 +50,11 @@ const sendEmailToUser = event => {
           subject: "New Event Suggestions!", // Subject line
           text:
             "Hello, new meeting detected, checkout our best hotels in the nearest location", // plain text events
-          html: `<div>
-      <div>Title: ${event.summary}</div>
-      <div>Begins: ${event.start}</div>
-      <div>End: ${event.end}</div>
-      <div>Location: ${event.location}</div>
-      For more details, <a href='${moreDetailsLink}'>Click here!</a>
-      </div>` // html body
+          html: template({
+            start: event.start,
+            location: event.location,
+            url: moreDetailsLink
+          })
         },
         function(err, info) {
           if (err) console.log(err);
