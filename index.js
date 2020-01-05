@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
-var moment = require("moment");
+const nodemailer = require("nodemailer");
+const fetch = require("node-fetch");
+const moment = require("moment");
 const port = 8000;
 
 const fs = require("fs");
@@ -8,6 +10,60 @@ const readline = require("readline");
 const { google } = require("googleapis");
 
 let initialEvents = [];
+let userEmail = "";
+
+const testAccount = {
+  user: "HackathonCWT@gmail.com",
+  pass: "Hackathon1!CWT"
+};
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: testAccount.user, // generated ethereal user
+    pass: testAccount.pass // generated ethereal password
+  }
+});
+
+const sendEmailToUser = event => {
+  fetch(
+    `https://api.opencagedata.com/geocode/v1/json?q=${event.location}&language=he&key=5526524d716e49baab25983806fb3573`
+  )
+    .then(result => {
+      return result.json();
+    })
+    .then(data => {
+      const latitude = data.results[0].geometry.lat;
+      const longitude = data.results[0].geometry.lng;
+      const country_code = data.results[0].components.country_code;
+
+      const dateFrom = moment(event.start).format("YYYY-MM-DD");
+      const dateTo = moment(event.end).format("YYYY-MM-DD");
+
+      const moreDetailsLink = `https://travel.mycwt.com/book-a-hotel#/hotel-results?checkInDate=${dateFrom}&checkOutDate=${dateTo}&countryCode=${country_code}&lat=${latitude}&lon=${longitude}&placeId=`;
+
+      transporter.sendMail(
+        {
+          from: "HackathonCWT@gmail.com", // sender address
+          to: userEmail, // list of receivers
+          subject: "New Event Suggestions!", // Subject line
+          text:
+            "Hello, new meeting detected, checkout our best hotels in the nearest location", // plain text events
+          html: `<div>
+      <div>Title: ${event.summary}</div>
+      <div>Begins: ${event.start}</div>
+      <div>End: ${event.end}</div>
+      <div>Location: ${event.location}</div>
+      For more details, <a href='${moreDetailsLink}'>Click here!</a>
+      </div>` // html body
+        },
+        function(err, info) {
+          if (err) console.log(err);
+          else console.log(info);
+        }
+      );
+    });
+};
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"];
@@ -86,23 +142,22 @@ function listEvents(auth) {
       orderBy: "updated"
     },
     (err, res) => {
-      if (err) return console.log("The API returned an error: " + err);
+      if (err) return console.log("The calendar API returned an error: " + err);
       const events = res.data.items;
       if (events.length) {
         formattedEvents = events.map((event, i) => {
           const start = event.start.dateTime || event.start.date;
           const end = event.end.dateTime || event.end.date;
           const summary = event.summary;
+          const location = event.location;
 
-          return { start, end, summary, created: event.created };
+          return { start, end, summary, location, created: event.created };
         });
         if (initialEvents.length !== formattedEvents.length) {
           initialEvents = formattedEvents;
-          console.log("events :", initialEvents);
-          console.log(
-            "Last event: ",
-            formattedEvents[formattedEvents.length - 1]
-          );
+          const lastEvent = formattedEvents[formattedEvents.length - 1];
+
+          sendEmailToUser(lastEvent);
         }
       } else {
         console.log("No upcoming events found.");
@@ -110,20 +165,6 @@ function listEvents(auth) {
     }
   );
 }
-
-app.post("/subscribe", (req, res) => {
-  console.log("req.body :", req.body);
-  createNewTokenFile(req.query.accessToken);
-  res.send("added!");
-});
-
-app.get("/", (req, res) => {
-  res.send("hello");
-});
-
-app.listen(process.env.PORT || port, () =>
-  console.log(`Example app listening on port ${port}!`)
-);
 
 const createNewTokenFile = token => {
   const expiry_date = Date.parse(new Date()) + 3600000;
@@ -138,7 +179,6 @@ const createNewTokenFile = token => {
 
   fs.writeFile(TOKEN_PATH, content, err => {
     if (err) throw err;
-    console.log("The file has been saved!");
     setInterval(() => {
       // Load client secrets from a local file.
       fs.readFile("credentials.json", (err, content) => {
@@ -149,3 +189,20 @@ const createNewTokenFile = token => {
     }, 5000);
   });
 };
+
+app.post("/subscribe", (req, res) => {
+  const { accesstoken, email } = req.headers;
+
+  userEmail = email;
+
+  createNewTokenFile(accesstoken);
+  res.send("added!");
+});
+
+app.get("/", (req, res) => {
+  res.send("hello");
+});
+
+app.listen(process.env.PORT || port, () =>
+  console.log(`Example app listening on port ${port}!`)
+);
