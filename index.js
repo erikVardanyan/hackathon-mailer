@@ -194,6 +194,7 @@ const createNewTokenFile = token => {
 app.post("/subscribe", (req, res) => {
   const { accesstoken, email } = req.headers;
 
+  initialEvents = [];
   userEmail = email;
 
   createNewTokenFile(accesstoken);
