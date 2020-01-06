@@ -26,6 +26,30 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+app.use(function(req, res, next) {
+  // Website you wish to allow to connect
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
+  // Request methods you wish to allow
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+
+  // Request headers you wish to allow
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  );
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader("Access-Control-Allow-Credentials", true);
+
+  // Pass to next layer of middleware
+  next();
+});
+
 const sendEmailToUser = event => {
   fetch(
     `https://api.opencagedata.com/geocode/v1/json?q=${event.location}&language=he&key=5526524d716e49baab25983806fb3573`
